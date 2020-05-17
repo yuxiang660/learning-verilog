@@ -1,0 +1,5 @@
+# iverilog output
+*.out
+
+# waveform output
+*.vcd
