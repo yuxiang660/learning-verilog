@@ -50,5 +50,71 @@
     - [例子](./code/array/registers.v)
     ![registers](./code/array/registers.png)
 
-# Verilog模块
+# Building Blocks
 
+## Verilog模块
+* [例子：D触发器模块](./code/dff/dff.v)
+![dff](./code/dff/dff.png)
+
+* 什么是`top-level module`?
+    * top-level模块包含其他所有模块
+    * 分为：`Design Top Level Module`和`Testbench Top Level`
+
+## Verilog端口
+* 端口类型
+    - input
+    - output
+    - inout
+* 所有端口默认声明类型为`wire`
+* 输出端口如果需要存储数据，可以声明为`reg`
+* 输入端口只能声明为`wire`，因为他们需要被外部立即驱动，而不是接一个触发器再驱动
+```verilog
+// Case #1 : Inputs are by default implicitly declared as type "wire"
+module des0_1  (input wire clk ...);     // wire need not be specified here
+module des0_2   (input clk, ...);       // By default clk is of type wire
+
+// Case #2 : Inputs cannot be of type reg
+module des1 (input reg clk, ...);     // Illegal: inputs cannot be of type reg
+
+// Case #3: Take two modules here with varying port widths
+module des2 (output [3:0] data, ...);  // A module declaration with 4-bit vector as output
+module des3 (input [7:0] data, ...);   // A module declaration with 8-bit vector as input
+
+module top ( ... );
+wire [7:0] net;
+des2  u0 ( .data(net) ... );     // Upper 4-bits of net are undriven
+des3  u1 ( .data(net) ... );     
+endmodule
+
+// Case #4 : Outputs cannot be connected to reg in parent module
+module top_0 ( ... );
+reg [3:0] data_reg;
+
+des2 ( .data(data) ...);   // Illegal: data output port is connected to a reg type signal "data_reg"
+endmodule
+```
+
+## Verilog assign赋值语句
+* 赋值声明语句<br>
+`assign <net_expression> = [drive_strength] [delay] <expression of different signals or constant value>`
+* 赋值规则
+    - 左侧接收变量不能是`reg`类型，因为`reg`类型不需要持续赋值，对`reg`类型的赋值需要在`initial`或`always`过程块中进行
+    - 只要右侧值发生改变，左侧变量就会被更新一次，因此`assign`也被称为持续赋值
+
+## always过程块
+* 语法
+```verilog
+always @ (event)
+  [statement]
+ 
+always @ (event) begin
+  [multiple statements]
+end
+```
+
+* 如果`always`没有定义`sensitivity list`会如何？
+    - 如果没有指定`always`的触发条件，仿真程序会持续执行`always`模块
+    - `always clk = ~clk;`，这条语句会让仿真程序hang死
+    - `always #10 clk = ~clk;`，这条语句会产生周期为20的方波
+    - `always`块即可以设计时序电路，也可以设计逻辑电路。两者的区别就是`sensitivity list`不同，如果是逻辑电路，`sensitivity list`监控所有关心变量的变化
+    - 因为过程块中被赋值的变量需要是`reg`类型，所以用`always`设计逻辑电路时，输出端口类型不能是`wire`类型

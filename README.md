@@ -132,7 +132,7 @@ endmodule 
 * [规则](https://blog.csdn.net/qq_36396104/article/details/79796677)
     - 端口信号
         - 输入端口信号只能是wire型，如`Cin`
-        - 输出端口信号可以是wire型也可以是register类型。若输出廥在过程块中赋值，则为register类型；若输出端口在过程块外赋值，则为wire类型。如`Cout`
+        - 输出端口信号可以是wire型也可以是register类型。若输出端在过程块中赋值，则为register类型；若输出端口在过程块外赋值，则为wire类型。如`Cout`
     - 输入端口可以由wire/reg驱动，如`C3`
     - 输出端口只能驱动wire类型，如`C5`
 * `wire`和`reg`的区别<br>
