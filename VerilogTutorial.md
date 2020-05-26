@@ -185,7 +185,7 @@ T=410 in=1 out=0
 Simulation complete via $finish(1) at time 430 NS + 0
 ```
 
-# Behavioral modeling
+# 行为级模型
 ## 块
 * 两种块
     - 顺序块`begin...end`
@@ -234,3 +234,109 @@ Simulation complete via $finish(1) at time 430 NS + 0
 * [例子 for-loop](./code/for/lshift.v)
 * 如下图所示，`for`循环可以使代码更加整洁
 ![lshift](./code/for/lshift.png)
+
+## function
+* 语法
+```
+function [automatic] [return_type] name ([port_list]);
+  [statements]
+endfunction
+```
+* `automatic`用于使function变成可重入，不然所有调用者共享此函数
+* function中不能使用和时间相关的语句，如:`#,@,wait,posedge,negedge`
+* function中不能用非阻塞赋值，`force-release`或者`assign-deassign`
+
+## task
+* 语法
+```
+// Style 1
+task [name];
+input  [port_list];
+inout  [port_list];
+output [port_list];
+begin
+    [statements]
+end
+endtask
+
+// Style 2
+task [name] (input [port_list], inout [port_list], output [port_list]);
+begin
+    [statements]
+end
+endtask
+```
+* `automatic`用于使task变成可重入，不然所有调用者共享此任务
+
+## Verilog Parameters
+* Parameters分类
+    - Module parameter
+    - Specify parameter
+### Module parameter
+* 定义
+```verilog
+module design_ip 
+  #(parameter BUS_WIDTH=32, 
+    parameter DATA_WIDTH=64) (  
+ 
+    input [BUS_WIDTH-1:0] addr,
+     // Other port declarations
+   );
+```
+* 调用者override
+```verilog
+module tb;
+    // Module instantiation override
+    design_ip  #(BUS_WIDTH = 64, DATA_WIDTH = 128) d0 ( [port list]);
+    // Use of defparam to override
+    defparam d0.FIFO_DEPTH = 128;
+ 
+endmodule
+```
+
+### Specify parameter
+```verilog
+// Use of specify block
+specify
+specparam  t_rise = 200, t_fall = 150;
+specparam  clk_to_q = 70, d_to_q = 100;
+endspecify
+
+// Within main module
+module  my_block ( ... );
+    specparam  hold = 2.0;
+    specparam  ddy  = 1.5;
+
+    parameter  WIDTH = 32;
+endmodule
+```
+
+# 门级模型
+## 延时
+* Rise, Fall and Turn-Off 延时
+```verilog
+// Single delay specified - used for all three types of transition delays
+or #(<delay>) o1 (out, a, b);
+ 
+// Two delays specified - used for Rise(0 to 1) and Fall(1 to 0) transitions
+or #(<rise>, <fall>) o1 (out, a, b);
+ 
+// Three delays specified - used for Rise, Fall and Turn-off(to z) transitions
+or #(<rise>, <fall>, <turn_off>) o1 (out, a, b);
+```
+* [例子：delay](./code/delay/des.v)仿真结果分析
+```verilog
+// 仿真结果
+T=0 a=0 b=0 and=x bufif0=x // ab初始化监控
+T=3 a=0 b=0 and=0 bufif0=x // and-fall在3时间单位(fall-delay:3)发生
+T=6 a=0 b=0 and=0 bufif0=0 // bufif0-fall在6时间单位(fall-delay:6)发生
+T=10 a=1 b=0 and=0 bufif0=0 // tb在10单位时间，赋值a为1
+T=15 a=1 b=0 and=0 bufif0=1 // bufif0-rise在15时间单位(rise-delay:5, 10+5)发生
+T=20 a=1 b=1 and=0 bufif0=1 // tb在20单位时间，赋值b为1
+T=22 a=1 b=1 and=1 bufif0=1 // and-rise在22单位时间(rise-delay:2, 20+2)发生
+T=27 a=1 b=1 and=1 bufif0=z // bufif0-turn_off在27单位时间(turn_off-delay:7, 20+7)发生
+T=30 a=0 b=1 and=1 bufif0=z // tb在30单位时间，赋值a为0
+T=33 a=0 b=1 and=0 bufif0=z // and-fall在33时间单位(fall-delay:3, 30+3)发生
+T=40 a=0 b=0 and=0 bufif0=z // tb在40单位时间，赋值b为0
+T=46 a=0 b=0 and=0 bufif0=0 // bufif0-fall在46单位时间(fall-delay:6, 40+6)发生
+```
