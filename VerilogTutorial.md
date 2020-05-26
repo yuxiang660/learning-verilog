@@ -184,3 +184,10 @@ T=390 in=1 out=0
 T=410 in=1 out=0
 Simulation complete via $finish(1) at time 430 NS + 0
 ```
+
+# Behavioral modeling
+## 块
+* 两种块
+    - 顺序块`begin...end`
+    - 并行块`fork...join`
+* [例子: 块](./code/block/blocktb.v)
