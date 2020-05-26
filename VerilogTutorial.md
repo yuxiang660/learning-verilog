@@ -153,6 +153,34 @@ end
     - [例子: half-adder](./code/gen-for/half_adder.v)
     - 利用生成块实现了参数化`N`代码，下图是`N=2`的testbench:
     ![half-adder](./code/gen-for/half_adder.png)
-* 条件生成
+* 条件生成和case生成
+    - 和循环生成一样，控制Verilog代码实现条件
+    - [例子：mux](./code/gen-if/mux.v)
 
-* case生成
+## 模式探测器例子
+* [Verilog Pattern Detector](./code/detector/det.v)
+* 输出结果：
+```
+T=10 in=0 out=0
+T=30 in=0 out=0
+T=50 in=0 out=0
+T=70 in=0 out=0
+T=90 in=0 out=0
+T=110 in=1 out=0
+T=130 in=1 out=0
+T=150 in=0 out=0
+T=170 in=1 out=0
+T=190 in=0 out=0
+T=210 in=1 out=0
+T=230 in=1 out=1
+T=250 in=1 out=0
+T=270 in=0 out=0
+T=290 in=1 out=0
+T=310 in=0 out=0
+T=330 in=1 out=0
+T=350 in=1 out=1
+T=370 in=1 out=0
+T=390 in=1 out=0
+T=410 in=1 out=0
+Simulation complete via $finish(1) at time 430 NS + 0
+```
