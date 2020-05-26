@@ -362,3 +362,8 @@ Verilog会按照仿真时间执行，但是如果多个动作同时在一个仿�
 |  Future  |  Occur at some future simulation time  |
 
 * 可参考[Nonblocking的例子](./code/assignment/non_block.v)，加深理解。
+
+## Verilog Timescale
+* [例子1: 1ns/1ns](./code/timescale/tb1.v)
+* [例子2: 10ns/1ns](./code/timescale/tb2.v)
+* [例子3: 1ns/1ps](./code/timescale/tb3.v)
