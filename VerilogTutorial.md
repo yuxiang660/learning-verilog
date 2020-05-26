@@ -376,3 +376,36 @@ Verilog会按照仿真时间执行，但是如果多个动作同时在一个仿�
 * [例子1: 1ns/1ns](./code/timescale/tb1.v)
 * [例子2: 10ns/1ns](./code/timescale/tb2.v)
 * [例子3: 1ns/1ps](./code/timescale/tb3.v)
+
+
+## Verilog Scheduling Semantics
+### Event Queue
+* 一个仿真点分为四个区域
+    * active events
+    * inactive events
+    * nonblocking assign events
+    * monitor events
+### 是什么让仿真存在不确定性？
+* 竞争
+* active events会以任意顺序从event queue中被移除
+
+## Verilog Display Tasks
+### Display/Write Tasks
+* `write`不会自动添加换行
+### Strobes
+* `strobe`打印当前仿真时间最后时刻的变量值，参考[例子](./code/display/strobe.v)
+### Continuous Monitors
+* `monitor`会持续打印变量的改变
+### 常见打印格式
+|  Argument   | Description  |
+|  ----  |  ----  |
+|  %h, %H  |  Display in hexadecimal format  |
+|  %d, %D  |  Display in decimal format  |
+|  %b, %B  |  Display in binary format  |
+|  %m, %M  |  Display hierarchical name  |
+|  %s, %S  |  Display as a string  |
+|  %t, %T  |  Display in time format  |
+|  %f, %F  |  Display 'real' in a decimal format  |
+|  %e, %E  |  Display 'real' in an exponential format  |
+
+* [例子：format](./code/display/format.v)
