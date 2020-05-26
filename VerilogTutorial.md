@@ -229,3 +229,8 @@ Simulation complete via $finish(1) at time 430 NS + 0
 ### 非阻塞赋值`<=`
 * 赋值动作发生在当前仿真时间(simulation time)的结尾
 * [例子 non-blocking](./code/assignment/non_block.v)
+
+## for Loop
+* [例子 for-loop](./code/for/lshift.v)
+* 如下图所示，`for`循环可以使代码更加整洁
+![lshift](./code/for/lshift.png)
