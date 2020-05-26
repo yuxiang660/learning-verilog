@@ -118,3 +118,41 @@ end
     - `always #10 clk = ~clk;`，这条语句会产生周期为20的方波
     - `always`块即可以设计时序电路，也可以设计逻辑电路。两者的区别就是`sensitivity list`不同，如果是逻辑电路，`sensitivity list`监控所有关心变量的变化
     - 因为过程块中被赋值的变量需要是`reg`类型，所以用`always`设计逻辑电路时，输出端口类型不能是`wire`类型
+
+## initial过程块
+* 语法
+```verilog
+initial 
+    [single statement]
+ 
+initial begin
+[multiple statements]
+end
+```
+
+* initial过程块的作用是什么？
+    - initial过程块不会被综合，因此也不会被转换成硬件电路
+    - initial过程块主要用来初始化变量
+
+## 过程块与类型
+* Verilog中的三个基本过程块
+    - `always @(condition)`
+    - `initial`
+    - `assign [LHS] = [RHS]`
+
+* 常见规则
+    - `reg`只能在`initial`或`always`中被赋值
+    - `wire`只能通过`assign`赋值
+    - 如果`initial/always`包含多条语句，需要用`begin...end`包裹
+
+## generate过程块(生成块)
+* 什么是生成块？
+    - 生成块可以动态生成Verilog代码
+    - 生成块可以通过参数，对实例引用进行控制
+* 循环生成
+    - [例子: half-adder](./code/gen-for/half_adder.v)
+    - 利用生成块实现了参数化`N`代码，下图是`N=2`的testbench:
+    ![half-adder](./code/gen-for/half_adder.png)
+* 条件生成
+
+* case生成
