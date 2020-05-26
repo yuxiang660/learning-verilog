@@ -19,6 +19,8 @@ Icarus Verilog是Verilog编译器，类似gcc编译器，通过testbench文件�
 * gtkwave<br>
 用于打开仿真波形文件，图形化显示波形
 
+# [Verilog Tutorial读书笔记](./VerilogTutorial.md)
+
 # Verilog简介
 ## Verilog和VHDL
 * Verilog的优点
