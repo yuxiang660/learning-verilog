@@ -8,7 +8,7 @@ det_110101 u0 ( .clk(clk), .rstn(rstn), .in(in), .out(out) );
 
 always @ (posedge clk)
   begin
-    $monitor ("T = %0t, in=%0d, out=%0d", $time, in, out);
+    $display ("T = %0t, in=%0d, out=%0d", $time, in, out);
   end
 
 initial
