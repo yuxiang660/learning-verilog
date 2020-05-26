@@ -191,3 +191,41 @@ Simulation complete via $finish(1) at time 430 NS + 0
     - 顺序块`begin...end`
     - 并行块`fork...join`
 * [例子: 块](./code/block/blocktb.v)
+
+## 赋值
+* 赋值形式
+    - 直接赋值(Procedural Assignment)
+        - 发生在`always`,`initial`,`task`和`functions`中
+        - 被赋值的变量一直保持不变，除非被再次赋值
+        - 所有变量都适用此方式的赋值，包括array类型
+        - 声明时初始化的非法形式(array): `reg [3:0] array [3:0] = 0; //illegal`
+    - 连续赋值(Continuous Assignment)
+        - 发生在连续赋值语句`assign`中，独立于过程块
+        - 赋值的变量为net类型
+    - Procedural Continuous Assignment
+        - 发生在过程块语句中
+        - 可修饰nets和variables
+        - 
+        - 形式:
+        ```verilog
+        reg q;
+        initial begin
+        assign q = 0;
+        #10 deassign q;
+        end
+
+        reg o, a, b;
+        initial begin
+        force o = a & b;
+        ...
+        release o;
+        end
+        ```
+
+## 阻塞与非阻塞赋值
+### 阻塞赋值`=`
+* 在顺序块的一个仿真时间点，前面的赋值语句一定先完成
+
+### 非阻塞赋值`<=`
+* 赋值动作发生在当前仿真时间(simulation time)的结尾
+* [例子 non-blocking](./code/assignment/non_block.v)
