@@ -340,3 +340,25 @@ T=33 a=0 b=1 and=0 bufif0=z // and-fall在33时间单位(fall-delay:3, 30+3)发�
 T=40 a=0 b=0 and=0 bufif0=z // tb在40单位时间，赋值b为0
 T=46 a=0 b=0 and=0 bufif0=0 // bufif0-fall在46单位时间(fall-delay:6, 40+6)发生
 ```
+
+# Verilog仿真
+## 仿真波形
+* update event<br>
+每个变量每一次改变都被称作`update event`
+* evaluation event<br>
+某些语句对`update event`敏感，当有`update event`发生，会触发这些语句执行，我们称作此动作为`evaluation event`
+* event queue
+因为在同一时刻有可能发生多个`evaluation event`，它们的执行顺序被`event queue`记录
+* simulation time
+Verilog会按照仿真时间执行，但是如果多个动作同时在一个仿真时间发生，就需要遵循下面的规则
+## Regions in event queue
+
+|  Events   | Description  |
+|  ----  |  ----  |
+|  Active  | Occur at the current simulation time, and can be processed in any order  |
+|  Inactive  | Occur at the current simulation time, but is processed after all active events are done  |
+|  Nonblocking  | Evaluated at some previous time, but assignment is done in the current simulation time after active and inactive events are done  |
+|  Monitor  |  Processed after all the active, inactive and non-blocking events are done  |
+|  Future  |  Occur at some future simulation time  |
+
+* 可参考[Nonblocking的例子](./code/assignment/non_block.v)，加深理解。
