@@ -47,9 +47,9 @@ ASIC器件上实现的总门数在5000门以上的电路结构版图掩膜，硬
     * 行为描述
         * system-level: 实现设计模块的外部性能的模型
         * algorithm-level: 实现算法运行的模型
-        * RTL(register transfer level): 描述数据在寄存器之间的流动和处理数据流动的模型
+        * RTL(register transfer level): 描述数据在寄存器之间的流动和处理数据流动的模型, 可参考[behavior代码](./code/multiplexer/behavior_always.v)或者[boolean代码](./code/multiplexer/boolean_assign.v)
     * 结构描述
-        * gate-level: 描述逻辑门以及逻辑门之间连接的模型
+        * gate-level: 描述逻辑门以及逻辑门之间连接的模型，可参考[gate代码](./code/multiplexer/gate_and.v)
         * switch-level: 描述器件中三极管和存储节点及他们之间连接的模型
 * Verilog的综合(synthesis)过程
     * 将逻辑代码转换成电路代码：逻辑语法(if/else，行为模块) -> 布尔表达式语法(~, &, |, 逻辑网表) -> 门电路语法(not, and, or, 门级结构模块)
